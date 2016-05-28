@@ -67,8 +67,8 @@ function test3()
 end
 ```
 
-While this works, we have to mangle the code in our loop in order to use this properly.
-However, if we instead do:
+While this works, we have to mangle the code in our loop (adding vecs and reshaping
+whenever we want to use it) in order to use this properly. However, if we instead do:
 
 ```julia
 function test4()
@@ -113,8 +113,8 @@ whereas the naive version has to copy the matrix each time the `uFull` is grown.
 
 The downside to this implementation is that it's hard to use as an actual result.
 For example, to grab a time course of the first row of `u` (i.e. what the value
-of `u` was at each step of the loop), we cannot do this without mangling and
-reshaping the data structure.
+of `u` was at each step of the loop), we cannot do this without and reshaping
+the data structure.
 
 GrowableArray implements the solution of test 4 while re-defining the indexing
 functions to make it more convenient to use. Since it implements the best solution
