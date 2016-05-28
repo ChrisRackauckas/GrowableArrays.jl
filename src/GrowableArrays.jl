@@ -1,3 +1,5 @@
+__precompile__()
+
 module GrowableArrays
 
 immutable GrowableArray{T,A,N} <: AbstractArray{T,N}
