@@ -173,7 +173,7 @@ Garr = copy(G)
 The output `Garr` is a continguous array. GrowableArrays also exports the `..` notation
 on AbstractArrays, and therefore we can still use the notation `Garr[..,1] = Garr[:,:,1]`.
 
-## Extra Note: Non-array elements
+## Note: Non-array elements
 
 If someone tries to use a GrowableArray on a non-array element:
 
