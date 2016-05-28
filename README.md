@@ -1,5 +1,8 @@
 # GrowableArrays.jl
 
+[![Build Status](https://travis-ci.org/ChrisRackauckas/GrowableArrays.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/GrowableArrays.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/893ct6vhp0f82e9u?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/growablearrays-jl)
+
 GrowableArrays was developed by Chris Rackauckas. This package implements the data
 structures GrowableArray and StackedArray which are designed to grow efficiently
 yet be easy to access and transform into more traditional arrays.
