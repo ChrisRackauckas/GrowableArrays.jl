@@ -104,11 +104,11 @@ t2 = @elapsed for i=1:numRuns test2() end
 t3 = @elapsed for i=1:numRuns test3() end
 t4 = @elapsed for i=1:numRuns test4() end
 println("Benchmark results: $t1 $t2 $t3 $t4")
-#Benchmark results: 22.971889311 25.859405573 2.726375558 2.725142828
+#Benchmark from AppVoyer: 15.9637432 23.9517617 0.0232065 0.0012836
 ```
 
-Notice that this implementation is an order of magnitude more efficient than the
-naive choice, and is within error of the vector approach. What we
+Notice that this implementation is orders of magnitude more efficient than the
+naive choice, and still an order of magnitude better than the vector approach. What we
 did here was create a vector of the matrix type and then repeatedly add
 these matrices to the vector. It's easy to understand why this is much more efficient:
 at each step of the loop this version only adds pointers to the new matrices,
