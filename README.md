@@ -1,4 +1,4 @@
-# GrowableArrays
+# GrowableArrays.jl
 
 GrowableArrays was developed by Chris Rackauckas. This package implements the data
 structures GrowableArray and StackedArray which are designed to grow efficiently
