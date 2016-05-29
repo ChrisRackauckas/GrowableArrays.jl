@@ -7,12 +7,16 @@ GrowableArrays was developed by Chris Rackauckas. This package implements the da
 structures GrowableArray and StackedArray which are designed to grow efficiently
 yet be easy to access and transform into more traditional arrays.
 
+# Installation
+
 To install the package, simply do
 
 ```julia
 Pkg.add("GrowableArrays")
 using GrowableArrays
 ```
+
+# Using the Package
 
 The use of GrowableArrays is best shown by an example problem. Say at every step
 of a loop we wished to append a matrix `u` to a vector `uFull`. One case where
@@ -21,6 +25,7 @@ solve this problem is to concatenate `u` to an array `uFull`. Such a code would
 look as follows:
 
 ```julia
+const PROBLEM_SIZE = 10000
 function test1()
   u =    [1 2 3 4
           1 3 3 4
@@ -28,7 +33,7 @@ function test1()
           5 2 3 1]
 
   uFull = u
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     uFull = hcat(uFull,u)
   end
   uFull
@@ -42,7 +47,7 @@ function test2()
 
   uFull = u
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     uFull = vcat(uFull,u)
   end
   uFull
@@ -59,13 +64,13 @@ function test3()
           5 2 3 1]
 
   uFull = Vector{Int}(0)
-  sizehint!(uFull,10000*16)
+  sizehint!(uFull,PROBLEM_SIZE*16)
   append!(uFull,vec(u))
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     append!(uFull,vec(u))
   end
-  reshape(uFull,4,4,10001)
+  reshape(uFull,4,4,PROBLEM_SIZE+1)
   uFull
 end
 ```
@@ -83,7 +88,7 @@ function test4()
   uFull = Vector{Array{Int,2}}(0)
   push!(uFull,u)
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -98,7 +103,7 @@ test1()
 test2()
 test3()
 test4()
-numRuns = 10
+NUM_RUNS = 100
 t1 = @elapsed for i=1:numRuns test1() end
 t2 = @elapsed for i=1:numRuns test2() end
 t3 = @elapsed for i=1:numRuns test3() end
@@ -132,8 +137,8 @@ function test4()
           5 2 3 1]
 
   uFull = GrowableArray(u)
-  sizehint!(uFull,10000)
-  for i = 1:10000
+  sizehint!(uFull,PROBLEM_SIZE)
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -205,7 +210,7 @@ u =    [1 2 3 4
 uFull = Vector{Array{Int,2}}(0)
 push!(uFull,u)
 
-for i = 1:10000
+for i = 1:PROBLEM_SIZE
   push!(uFull,u)
 end
 S = StackedArray(uFull)

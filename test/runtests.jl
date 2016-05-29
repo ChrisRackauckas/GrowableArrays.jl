@@ -1,6 +1,9 @@
 using GrowableArrays
 using Base.Test
 
+tic()
+const NUM_RUNS = 10
+const PROBLEM_SIZE = 100
 function test1()
   u =    [1 2 3 4
           1 3 3 4
@@ -8,7 +11,7 @@ function test1()
           5 2 3 1]
 
   uFull = u
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     uFull = hcat(uFull,u)
   end
   uFull
@@ -22,7 +25,7 @@ function test2()
 
   uFull = u
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     uFull = vcat(uFull,u)
   end
   uFull
@@ -35,13 +38,13 @@ function test3()
           5 2 3 1]
 
   uFull = Vector{Int}(0)
-  sizehint!(uFull,10000*16)
+  sizehint!(uFull,PROBLEM_SIZE*16)
   append!(uFull,vec(u))
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     append!(uFull,vec(u))
   end
-  reshape(uFull,4,4,10001)
+  reshape(uFull,4,4,PROBLEM_SIZE+1)
   uFull
 end
 
@@ -54,7 +57,7 @@ function test4()
   uFull = Vector{Array{Int}}(0)
   push!(uFull,u)
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -69,7 +72,7 @@ function test5()
   uFull = Vector{Array{Int,2}}(0)
   push!(uFull,u)
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -84,7 +87,7 @@ function test6()
   uFull = Vector{typeof(u)}(0)
   push!(uFull,u)
 
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -97,7 +100,7 @@ function test7()
           5 2 3 1]
 
   uFull = GrowableArray(u)
-  for i = 1:10000
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -110,8 +113,8 @@ function test8()
           5 2 3 1]
 
   uFull = GrowableArray(u)
-  sizehint!(uFull,10000)
-  for i = 1:10000
+  sizehint!(uFull,PROBLEM_SIZE)
+  for i = 1:PROBLEM_SIZE
     push!(uFull,u)
   end
   uFull
@@ -130,15 +133,14 @@ test7()
 test8()
 
 println("Running Benchmarks")
-numRuns = 10
-t1 = @elapsed for i=1:numRuns test1() end
-t2 = @elapsed for i=1:numRuns test2() end
-t3 = @elapsed for i=1:numRuns test3() end
-t4 = @elapsed for i=1:numRuns test4() end
-t5 = @elapsed for i=1:numRuns test5() end
-t6 = @elapsed for i=1:numRuns test6() end
-t7 = @elapsed for i=1:numRuns test7() end
-t8 = @elapsed for i=1:numRuns test8() end
+t1 = @elapsed for i=1:NUM_RUNS test1() end
+t2 = @elapsed for i=1:NUM_RUNS test2() end
+t3 = @elapsed for i=1:NUM_RUNS test3() end
+t4 = @elapsed for i=1:NUM_RUNS test4() end
+t5 = @elapsed for i=1:NUM_RUNS test5() end
+t6 = @elapsed for i=1:NUM_RUNS test6() end
+t7 = @elapsed for i=1:NUM_RUNS test7() end
+t8 = @elapsed for i=1:NUM_RUNS test8() end
 
 println("Benchmark results: $t1 $t2 $t3 $t4 $t5 $t6 $t7 $t8")
 println("Note the overhead of building the type before the loop for small runs")
@@ -174,3 +176,4 @@ S = StackedArray(uFull)
 K = S[1,..] + S[3,..]
 Sarr = copy(S)
 @test typeof(Sarr)<:AbstractArray{Int,3}
+toc()
