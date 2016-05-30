@@ -157,12 +157,13 @@ G = GrowableArray(A)
 push!(G,A)
 push!(G,A)
 push!(G,A)
+using EllipsesNotation
 G[4,..] = B #Acts as a standard array
 G[3] = B #Acts as a vector of matrices
 K = G[3,..] + G[4,..]
 ```
 
-Notice here we show the `..` notation. `..` simply fills in the other columns
+Notice here we show the `..` notation from (EllipsesNotation)[]. `..` simply fills in the other columns
 with colons, meaning `G[3,..]==G[3,:,:]` (or `G[..,3]==G[:,:,3]`, and the number
 of colons matches the number of remaining dimensions).  This is  useful since
 what someone put in the GrowableArray could be an arbitrary sized array, so
@@ -222,5 +223,4 @@ As before, Sarr is a now a standard multidimensional array.
 ## Acknowledgements
 
 I would like to acknowledge StackExchange user Matt B. for coming up with the
-StackedArray implementation and the idea for the GrowableArray. I would also like
-to acknowledge M. Schauer for the `..` notation implementation.
+StackedArray implementation and the idea for the GrowableArray.
