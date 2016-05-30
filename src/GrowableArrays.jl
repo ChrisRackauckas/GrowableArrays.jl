@@ -1,7 +1,7 @@
 __precompile__()
 
 module GrowableArrays
-  using EllipsesNotation
+  using EllipsisNotation
   import Base: setindex!, getindex
   immutable GrowableArray{T,A,N} <: AbstractArray{T,N}
       data::Vector{A}
