@@ -157,7 +157,7 @@ G = GrowableArray(A)
 push!(G,A)
 push!(G,A)
 push!(G,A)
-using EllipsesNotation
+using EllipsisNotation
 G[4,..] = B #Acts as a standard array
 G[3] = B #Acts as a vector of matrices
 K = G[3,..] + G[4,..]
