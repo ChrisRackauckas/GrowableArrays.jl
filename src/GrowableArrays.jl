@@ -49,6 +49,6 @@ module GrowableArrays
   Base.getindex(S::StackedArray, i::Int) = S.data[ind2sub(size(S), i)...] # expand a linear index out
   Base.getindex(S::StackedArray, i::Int, I::Int...) = S.data[i][I...]
 
-  export StackedArray, GrowableArray, setindex!, getindex, ..
+  export StackedArray, GrowableArray, setindex!, getindex, push!, endof
 
 end # module
