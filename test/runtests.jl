@@ -1,4 +1,4 @@
-using GrowableArrays
+using GrowableArrays, EllipsisNotation
 using Base.Test
 
 tic()
