@@ -122,12 +122,14 @@ whereas the naive version has to copy the matrix each time the `uFull` is grown.
 The downside to this implementation is that it's hard to use as an actual result.
 For example, to grab a time course of the first row of `u` (i.e. what the value
 of `u` was at each step of the loop), we cannot do this without and reshaping
-the data structure.
+the data structure. Also, this method silently has an error! Since we only pushed
+the reference to `u`, when `u` changes, all of the entries of `uFull` change!
 
-GrowableArray implements the solution of test 4 while re-defining the indexing
-functions to make it more convenient to use. Since it implements the best solution
-to the growing array problem, it has a constructor which is defined to be useful
-in that situation. An example of its use is:
+GrowableArray implements the solution of test 4 with the appropriate copy fix
+while re-defining the indexing functions to make it more convenient to use. Thus
+it's not as fast as `test4`, but is still an order of magnitude faster than naive
+approaches. Since it implements the best solution to the growing array problem, it has a
+constructor which is defined to be useful in that situation. An example of its use is:
 
 ```julia
 function test4()

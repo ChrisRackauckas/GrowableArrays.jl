@@ -176,5 +176,5 @@ end
 S = StackedArray(uFull)
 K = S[1,..] + S[3,..]
 Sarr = copy(S)
-@test typeof(Sarr)<:AbstractArray{Int,3}
+@test typeof(Sarr)<:AbstractArray{Float64,3}
 toc()
