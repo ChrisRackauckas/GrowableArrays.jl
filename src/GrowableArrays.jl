@@ -2,7 +2,7 @@ __precompile__()
 
 module GrowableArrays
   using EllipsisNotation
-  import Base: setindex!, getindex
+  import Base: setindex!, getindex, push!, endof
   immutable GrowableArray{T,A,N} <: AbstractArray{T,N}
       data::Vector{A}
   end
@@ -16,7 +16,7 @@ module GrowableArrays
 
   function GrowableArray(elem)
     data = Vector{typeof(elem)}(0)
-    push!(data,elem)
+    push!(data,deepcopy(elem))
     if typeof(elem) <: AbstractArray
       GrowableArray{eltype(elem),typeof(elem),ndims(elem)+1}(data)
     else
@@ -24,6 +24,8 @@ module GrowableArrays
     end
   end
   Base.sizehint!(G::GrowableArray,i::Int) = sizehint!(G.data,i)
+  Base.length(G::GrowableArray) = length(G.data)
+  Base.push!(G::GrowableArray,arr::AbstractArray) = push!(G.data,deepcopy(arr))
   Base.size(G::GrowableArray) = (length(G.data), size(G.data[1])...)
   Base.getindex(G::GrowableArray, i::Int) = G.data[i] # expand a linear index out
   Base.getindex(G::GrowableArray, i::Int, I::Int...) = G.data[i][I...]

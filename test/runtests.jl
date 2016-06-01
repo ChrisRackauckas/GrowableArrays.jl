@@ -148,8 +148,8 @@ A = [1 2; 3 4]
 B = [1 2; 4 3]
 G = GrowableArray(A)
 push!(G,A)
-push!(G,A)
-push!(G,A)
+push!(G,2*A)
+push!(G,3*A)
 @test begin
   Garr = copy(G) #Should change it to a regular array
   typeof(Garr)<:AbstractArray{Int,3}
@@ -161,15 +161,16 @@ G[4] = B
 G[4,..] = B
 @test G[4] == B
 @test reshape(G[4,..],2,2) == B #This acts as a standard array
-u =    [1 2 3 4
+u =    Float64[1 2 3 4
         1 3 3 4
         1 5 6 3
         5 2 3 1]
 
-uFull = Vector{Array{Int,2}}(0)
+uFull = Vector{Array{Float64,2}}(0)
 push!(uFull,u)
 
 for i = 1:100
+  u = 1.13*u
   push!(uFull,u)
 end
 S = StackedArray(uFull)
