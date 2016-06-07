@@ -86,16 +86,17 @@ function test4()
           5 2 3 1]
 
   uFull = Vector{Array{Int,2}}(0)
-  push!(uFull,u)
+  push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
-    push!(uFull,u)
+    push!(uFull,copy(u))
   end
   uFull
 end
 ```
 
-we can get timing results as follows:
+(Notice that we have to use copy in case the array changes since it's only a reference!). 
+We can get timing results as follows:
 
 ```julia
 #Compile Test Functions
@@ -103,13 +104,14 @@ test1()
 test2()
 test3()
 test4()
-NUM_RUNS = 100
+const NUM_RUNS = 100
+const PROBLEM_SIZE = 1000
 t1 = @elapsed for i=1:numRuns test1() end
 t2 = @elapsed for i=1:numRuns test2() end
 t3 = @elapsed for i=1:numRuns test3() end
 t4 = @elapsed for i=1:numRuns test4() end
 println("Benchmark results: $t1 $t2 $t3 $t4")
-#Benchmark from AppVoyer: 15.9637432 23.9517617 0.0232065 0.0012836
+#Benchmark results: 1.923640854 2.131108443 0.012493308 0.00866045 0.005246504 0.00532613 0.00773568 0.00819909
 ```
 
 Notice that this implementation is orders of magnitude more efficient than the
