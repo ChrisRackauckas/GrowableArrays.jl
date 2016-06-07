@@ -2,8 +2,8 @@ using GrowableArrays, EllipsisNotation
 using Base.Test
 
 tic()
-const NUM_RUNS = 10
-const PROBLEM_SIZE = 100
+const NUM_RUNS = 100
+const PROBLEM_SIZE = 1000
 function test1()
   u =    [1 2 3 4
           1 3 3 4
@@ -55,10 +55,10 @@ function test4()
           5 2 3 1]
 
   uFull = Vector{Array{Int}}(0)
-  push!(uFull,u)
+  push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
-    push!(uFull,u)
+    push!(uFull,copy(u))
   end
   uFull
 end
@@ -70,10 +70,10 @@ function test5()
           5 2 3 1]
 
   uFull = Vector{Array{Int,2}}(0)
-  push!(uFull,u)
+  push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
-    push!(uFull,u)
+    push!(uFull,copy(u))
   end
   uFull
 end
@@ -88,7 +88,7 @@ function test6()
   push!(uFull,u)
 
   for i = 1:PROBLEM_SIZE
-    push!(uFull,u)
+    push!(uFull,copy(u))
   end
   uFull
 end

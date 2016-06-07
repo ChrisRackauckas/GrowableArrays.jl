@@ -16,7 +16,12 @@ module GrowableArrays
 
   function GrowableArray(elem)
     data = Vector{typeof(elem)}(0)
-    push!(data,deepcopy(elem))
+    if typeof(elem) <: GrowableArray || typeof(elem) <: StackedArray #Copying GrowableArrays changes them!
+      push!(data,elem)
+    else
+      push!(data,copy(elem))
+    end
+
     if typeof(elem) <: AbstractArray
       GrowableArray{eltype(elem),typeof(elem),ndims(elem)+1}(data)
     else
@@ -25,7 +30,8 @@ module GrowableArrays
   end
   Base.sizehint!(G::GrowableArray,i::Int) = sizehint!(G.data,i)
   Base.length(G::GrowableArray) = length(G.data)
-  Base.push!(G::GrowableArray,arr::AbstractArray) = push!(G.data,deepcopy(arr))
+  Base.push!(G::GrowableArray,Garr::GrowableArray) = push!(G.data,Garr.data) #Copying GrowableArrays changes them!
+  Base.push!(G::GrowableArray,arr::AbstractArray)  = push!(G.data,copy(arr))
   Base.size(G::GrowableArray) = (length(G.data), size(G.data[1])...)
   Base.getindex(G::GrowableArray, i::Int) = G.data[i] # expand a linear index out
   Base.getindex(G::GrowableArray, i::Int, I::Int...) = G.data[i][I...]
@@ -48,6 +54,7 @@ module GrowableArrays
   Base.size(S::StackedArray) = S.dims
   Base.getindex(S::StackedArray, i::Int) = S.data[ind2sub(size(S), i)...] # expand a linear index out
   Base.getindex(S::StackedArray, i::Int, I::Int...) = S.data[i][I...]
+  Base.push!(G::GrowableArray,Sarr::StackedArray)  = push!(G.data,Sarr.data)
 
   export StackedArray, GrowableArray, setindex!, getindex, push!, endof
 
