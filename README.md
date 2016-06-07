@@ -115,7 +115,7 @@ println("Benchmark results: $t1 $t2 $t3 $t4")
 ```
 
 Notice that this implementation is orders of magnitude more efficient than the
-naive choice, and still an order of magnitude better than the vector approach. What we
+naive choice, and still an much faster than the vector approach. What we
 did here was create a vector of the matrix type and then repeatedly add
 these matrices to the vector. It's easy to understand why this is much more efficient:
 at each step of the loop this version only adds pointers to the new matrices,
