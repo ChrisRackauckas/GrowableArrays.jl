@@ -14,12 +14,14 @@ module GrowableArrays
   end
   =#
 
-  function GrowableArray(elem)
+  function GrowableArray(elem;initvalue=true)
     data = Vector{typeof(elem)}(0)
-    if typeof(elem) <: GrowableArray || typeof(elem) <: StackedArray #Copying GrowableArrays changes them!
-      push!(data,elem)
-    else
-      push!(data,copy(elem))
+    if initvalue
+      if typeof(elem) <: GrowableArray || typeof(elem) <: StackedArray #Copying GrowableArrays changes them!
+        push!(data,elem)
+      else
+        push!(data,copy(elem))
+      end
     end
 
     if typeof(elem) <: AbstractArray
