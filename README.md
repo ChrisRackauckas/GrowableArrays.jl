@@ -95,7 +95,7 @@ function test4()
 end
 ```
 
-(Notice that we have to use copy in case the array changes since it's only a reference!). 
+(Notice that we have to use copy in case the array changes since it's only a reference!).
 We can get timing results as follows:
 
 ```julia
@@ -151,8 +151,10 @@ end
 
 Notice here we constrcted the GrowableArray by giving it the object `u`. This
 creates a Vector which holds `typeof(u)`s and grows the array. `sizehint!` is
-defined to sizehint the underlying array. With the wrapper, basic array usage
-matches that of other arrays:
+defined to sizehint the underlying array. [Note that `GrowableArray(u)` initiates
+the data vector with `u`. To initialize the GrowableArray with empty data (but
+typed to `typeof(u)`), use the constructor `GrowableArray(u,initvalue=false)`].
+With the wrapper, basic array usage matches that of other arrays:
 
 ```julia
 A = [1 2; 3 4]
