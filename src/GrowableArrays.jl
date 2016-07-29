@@ -32,7 +32,7 @@ module GrowableArrays
   end
   Base.sizehint!(G::GrowableArray,i::Int) = sizehint!(G.data,i)
   Base.length(G::GrowableArray) = length(G.data)
-  Base.push!(G::GrowableArray,Garr::GrowableArray) = push!(G.data,Garr.data) #Copying GrowableArrays changes them!
+  Base.push!(G::GrowableArray,Garr::GrowableArray) = push!(G.data,Garr) #Copying GrowableArrays changes them!
   Base.push!(G::GrowableArray,arr::AbstractArray)  = push!(G.data,copy(arr))
   Base.size(G::GrowableArray) = (length(G.data), size(G.data[1])...)
   Base.getindex(G::GrowableArray, i::Int) = G.data[i] # expand a linear index out
