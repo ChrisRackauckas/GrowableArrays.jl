@@ -1,7 +1,8 @@
 using GrowableArrays, EllipsisNotation
-using Base.Test
 
-tic()
+using Test
+
+
 const NUM_RUNS = 100
 const PROBLEM_SIZE = 1000
 function test1()
@@ -37,7 +38,7 @@ function test3()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{Int}(0)
+  uFull = Vector{Int}(undef, 0)
   sizehint!(uFull,PROBLEM_SIZE*16)
   append!(uFull,vec(u))
 
@@ -54,7 +55,7 @@ function test4()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{Array{Int}}(0)
+  uFull = Vector{Array{Int}}(undef, 0)
   push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
@@ -69,7 +70,7 @@ function test5()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{Array{Int,2}}(0)
+  uFull = Vector{Array{Int,2}}(undef, 0)
   push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
@@ -84,7 +85,7 @@ function test6()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{typeof(u)}(0)
+  uFull = Vector{typeof(u)}(undef, 0)
   push!(uFull,u)
 
   for i = 1:PROBLEM_SIZE
@@ -155,26 +156,28 @@ push!(G,3*A)
   typeof(Garr)<:AbstractArray{Int,3}
 end
 
-G2 = GrowableArray(1)
-push!(G2,3)
-G[4] = B
-G[4,..] = B
-@test G[4] == B
-@test reshape(G[4,..],2,2) == B #This acts as a standard array
-u =    Float64[1 2 3 4
-        1 3 3 4
-        1 5 6 3
-        5 2 3 1]
+# G2 = GrowableArray(1)
+# push!(G2,4)
+# G2[2] = 3
+# G2[4,..] = 3
+# @test G[4] == 12
+# @test reshape(G[4,..],2,2) == B #This acts as a standard array
+u =  Float64[1 2 3 4
+             1 3 3 4
+             1 5 6 3
+             5 2 3 1]
 
-uFull = Vector{Array{Float64,2}}(0)
+uFull = Vector{Array{Float64,2}}(undef, 0)
 push!(uFull,u)
 
+let u = u
 for i = 1:100
-  u = 1.13*u
+  u = 1.13 .* u
   push!(uFull,u)
 end
+end
+
 S = StackedArray(uFull)
 K = S[1,..] + S[3,..]
 Sarr = copy(S)
 @test typeof(Sarr)<:AbstractArray{Float64,3}
-toc()
