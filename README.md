@@ -63,7 +63,7 @@ function test3()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{Int}(0)
+  uFull = Vector{Int}(undef, 0)
   sizehint!(uFull,PROBLEM_SIZE*16)
   append!(uFull,vec(u))
 
@@ -85,7 +85,7 @@ function test4()
           1 5 6 3
           5 2 3 1]
 
-  uFull = Vector{Array{Int,2}}(0)
+  uFull = Vector{Array{Int,2}}(undef, 0)
   push!(uFull,copy(u))
 
   for i = 1:PROBLEM_SIZE
@@ -106,10 +106,10 @@ test3()
 test4()
 const NUM_RUNS = 100
 const PROBLEM_SIZE = 1000
-t1 = @elapsed for i=1:numRuns test1() end
-t2 = @elapsed for i=1:numRuns test2() end
-t3 = @elapsed for i=1:numRuns test3() end
-t4 = @elapsed for i=1:numRuns test4() end
+t1 = @elapsed for i=1:NUM_RUNS test1() end
+t2 = @elapsed for i=1:NUM_RUNS test2() end
+t3 = @elapsed for i=1:NUM_RUNS test3() end
+t4 = @elapsed for i=1:NUM_RUNS test4() end
 println("Benchmark results: $t1 $t2 $t3 $t4")
 #Benchmark results: 1.923640854 2.131108443 0.012493308 0.00866045 0.005246504 0.00532613 0.00773568 0.00819909
 ```
@@ -214,11 +214,13 @@ u =    [1 2 3 4
         1 5 6 3
         5 2 3 1]
 
-uFull = Vector{Array{Int,2}}(0)
+uFull = Vector{Array{Int,2}}(undef, 0)
 push!(uFull,u)
 
-for i = 1:PROBLEM_SIZE
-  push!(uFull,u)
+let u=u
+    for i = 1:PROBLEM_SIZE
+        push!(uFull,u)
+    end
 end
 S = StackedArray(uFull)
 Sarr = copy(S)
