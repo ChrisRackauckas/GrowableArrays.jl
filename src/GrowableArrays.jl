@@ -1,9 +1,7 @@
-__precompile__()
-
 module GrowableArrays
   using EllipsisNotation
-  import Base: setindex!, getindex, push!, endof
-  immutable GrowableArray{T,A,N} <: AbstractArray{T,N}
+  import Base: setindex!, getindex, push!
+  struct GrowableArray{T,A,N} <: AbstractArray{T,N}
       data::Vector{A}
   end
   #=
@@ -15,7 +13,7 @@ module GrowableArrays
   =#
 
   function GrowableArray(elem;initvalue=true)
-    data = Vector{typeof(elem)}(0)
+    data = Vector{typeof(elem)}(undef, 0)
     if initvalue
       if typeof(elem) <: GrowableArray || typeof(elem) <: StackedArray #Copying GrowableArrays changes them!
         push!(data,elem)
@@ -38,7 +36,8 @@ module GrowableArrays
   Base.getindex(G::GrowableArray, i::Int) = G.data[i] # expand a linear index out
   Base.getindex(G::GrowableArray, i::Int, I::Int...) = G.data[i][I...]
   function Base.setindex!(G::GrowableArray, elem,i::Int) ##TODO: Add type checking on elem
-    G.data[ind2sub(size(G), i)...] = elem
+      cidx = LinearIndices(size(G))
+    G.data[cidx[i]] = elem
   end
   function Base.setindex!(G::GrowableArray, elem,i::Int,I::Int...)
     G.data[i][I...] = elem
@@ -47,17 +46,17 @@ module GrowableArrays
     push!(G.data,elem)
   end
 
-  immutable StackedArray{T,N,A} <: AbstractArray{T,N}
+  struct StackedArray{T,N,A} <: AbstractArray{T,N}
       data::A
       dims::NTuple{N,Int}
   end
   StackedArray(vec::AbstractVector) = StackedArray(vec, (length(vec), size(vec[1])...)) # TODO: ensure all elements are the same size
-  StackedArray{A<:AbstractVector, N}(vec::A, dims::NTuple{N}) = StackedArray{eltype(eltype(A)),N,A}(vec, dims)
+  StackedArray(vec::A, dims::NTuple{N}) where {A<:AbstractVector, N} = StackedArray{eltype(eltype(A)),N,A}(vec, dims)
   Base.size(S::StackedArray) = S.dims
   Base.getindex(S::StackedArray, i::Int) = S.data[ind2sub(size(S), i)...] # expand a linear index out
   Base.getindex(S::StackedArray, i::Int, I::Int...) = S.data[i][I...]
   Base.push!(G::GrowableArray,Sarr::StackedArray)  = push!(G.data,Sarr.data)
 
-  export StackedArray, GrowableArray, setindex!, getindex, push!, endof
+  export StackedArray, GrowableArray, setindex!, getindex, push!
 
 end # module
