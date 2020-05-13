@@ -36,7 +36,7 @@ module GrowableArrays
   Base.getindex(G::GrowableArray, i::Int) = G.data[i] # expand a linear index out
   Base.getindex(G::GrowableArray, i::Int, I::Int...) = G.data[i][I...]
   function Base.setindex!(G::GrowableArray, elem,i::Int) ##TODO: Add type checking on elem
-      cidx = LinearIndices(size(G))
+    cidx = LinearIndices(size(G))
     G.data[cidx[i]] = elem
   end
   function Base.setindex!(G::GrowableArray, elem,i::Int,I::Int...)
